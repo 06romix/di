@@ -1,5 +1,5 @@
 {
-  "name": "dev265/di",
+  "name": "dev256/di",
   "type": "library",
   "description": "Simple dependency injection",
   "keywords": ["object manager", "di"],
