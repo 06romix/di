@@ -34,7 +34,7 @@ class ObjectManager implements ObjectManagerInterface
         if ($constructor) {
             foreach ($constructor->getParameters() as $parameter) {
                 $params[$parameter->getName()] = [
-                    'class' => $parameter->getType() ? $parameter->getType()->getName() : null,
+                    'class' => $parameter->getType()->isBuiltin() ? null : $parameter->getType()->getName(),
                     'value' => $parameter->isOptional() ? $parameter->getDefaultValue() : false,
                 ];
             }
