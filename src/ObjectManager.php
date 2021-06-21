@@ -15,6 +15,7 @@ class ObjectManager implements ObjectManagerInterface
     {
         $this->sharedInstances = &$sharedInstances;
         $this->sharedInstances[__CLASS__] = $this;
+        $this->sharedInstances[ObjectManagerInterface::class] = $this;
     }
 
     public function create(string $type, array $arguments = []): object
@@ -23,12 +24,9 @@ class ObjectManager implements ObjectManagerInterface
             $type = $this->preference[$type];
         }
 
+        $type = $this->applyAttributePreference($type);
+
         $reflection = new \ReflectionClass($type);
-
-        foreach ($reflection->getAttributes(DefaultPreference::class) as $attribute) {
-            $type = $attribute->getArguments()['class'];
-        }
-
         $constructor = $reflection->getConstructor();
         $params = [];
         if ($constructor) {
@@ -81,5 +79,20 @@ class ObjectManager implements ObjectManagerInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $type
+     * @return string
+     * @throws \ReflectionException
+     */
+    protected function applyAttributePreference(string $type): string
+    {
+        $reflection = new \ReflectionClass($type);
+        $preferenceType = $type;
+        foreach ($reflection->getAttributes(DefaultPreference::class) as $attribute) {
+            $preferenceType = $attribute->getArguments()['class'];
+        }
+        return $preferenceType;
     }
 }
