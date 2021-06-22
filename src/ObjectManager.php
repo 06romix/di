@@ -68,10 +68,8 @@ class ObjectManager implements ObjectManagerInterface
         $result = [];
         foreach ($params as $key => $param) {
             if (isset($arguments[$key])) {
-                $param['value'] = $arguments[$key];
-            }
-
-            if ($param['class']) {
+                $result[] = $arguments[$key];
+            } elseif ($param['class']) {
                 $result[] = $this->get($param['class']);
             } else {
                 $result[] = $param['value'];
