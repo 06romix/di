@@ -1,7 +1,7 @@
 {
   "name": "dev256/di",
   "type": "library",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple dependency injection",
   "keywords": ["object manager", "di"],
   "minimum-stability": "stable",
