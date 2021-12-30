@@ -31,8 +31,14 @@ class ObjectManager implements ObjectManagerInterface
         $params = [];
         if ($constructor) {
             foreach ($constructor->getParameters() as $parameter) {
+                if ($parameter->getType() instanceof \ReflectionUnionType || $parameter->getType()->isBuiltin()) {
+                    $class = null;
+                } else {
+                    $class = $parameter->getType()->getName();
+                }
+
                 $params[$parameter->getName()] = [
-                    'class' => $parameter->getType()->isBuiltin() ? null : $parameter->getType()->getName(),
+                    'class' => $class,
                     'value' => $parameter->isOptional() ? $parameter->getDefaultValue() : false,
                 ];
             }
